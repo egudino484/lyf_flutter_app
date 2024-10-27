@@ -1,0 +1,195 @@
+[
+	{
+		"inputs": [],
+		"name": "ALREADY_GOT_MEMBERSHIP_TYPE",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "enum DecentralisedID.membership_type",
+				"name": "new_membership",
+				"type": "uint8"
+			}
+		],
+		"name": "buyMemebership",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_userName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_firstName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_lastName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_dob",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_documentNumber",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_nationality",
+				"type": "string"
+			}
+		],
+		"name": "createDID",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "ID_ALREADY_CREATED",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "ID_DOESNT_EXIST",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "INVALID_AMOUNT",
+		"type": "error"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "id",
+				"type": "uint64"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "userName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "userAddy",
+				"type": "address"
+			}
+		],
+		"name": "IDCreated",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "id",
+				"type": "uint64"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "userName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "userAddy",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "enum DecentralisedID.membership_type",
+				"name": "stage",
+				"type": "uint8"
+			}
+		],
+		"name": "MembershipAdded",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "userAddy",
+				"type": "address"
+			}
+		],
+		"name": "getDID",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint64",
+						"name": "id",
+						"type": "uint64"
+					},
+					{
+						"internalType": "string",
+						"name": "userNAme",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "first_name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "last_name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "date_of_birth",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "document_number",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "nationality",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "user_address",
+						"type": "address"
+					},
+					{
+						"internalType": "enum DecentralisedID.membership_type",
+						"name": "stage",
+						"type": "uint8"
+					}
+				],
+				"internalType": "struct DecentralisedID.ID",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
