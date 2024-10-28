@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lyf_flutter_app/pages/gridview_services.dart';
 import 'package:lyf_flutter_app/pages/home.dart';
-
+import 'dart:math';
 import 'pages/contract_screen.dart';
 import 'pages/detail_view.dart';
+import 'pages/user_info_screen.dart';
 
 void main() {
   runApp(HotelApp());
@@ -32,33 +33,43 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        leading: const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: CircleAvatar(
-            backgroundImage: NetworkImage(
-              'https://storage.googleapis.com/a1aa/image/ZrUp88GfLCV1WSB9ajmuzJN7e11hwP4PA4jJxfbCE6lsalTnA.jpg',
-            ),
-          ),
-        ),
-        title: const Text(
-          'Hello, Alpay',
-          style: TextStyle(color: Colors.black),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_none, color: Colors.black),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ContractPage()),
-              );
-            },
-          ),
-        ],
+  elevation: 0,
+  backgroundColor: Colors.white,
+  leading: Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: GestureDetector(
+      onTap: () {
+        // Acción al hacer clic en el avatar
+        print("Avatar clicked!");
+        // Puedes navegar a otra pantalla o realizar cualquier otra acción
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => UserProfileScreen()), // Cambia a la página que deseas abrir
+        );
+      },
+      child: const CircleAvatar(
+        radius: 40,
+        backgroundImage: AssetImage('assets/imgs/detail_img.png'),
       ),
-      body: Column(
+    ),
+  ),
+  title: const Text(
+    'Hello, John',
+    style: TextStyle(color: Colors.black),
+  ),
+  actions: [
+    IconButton(
+      icon: const Icon(Icons.notifications_none, color: Colors.black),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ContractPage()),
+        );
+      },
+    ),
+  ],
+),
+body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -95,14 +106,15 @@ class HomePage extends StatelessWidget {
                   context,
                   "John Doe",
                   "https://example.com/image.jpg",
-                  ["Skill 1", "Skill 2", "Skill 3"],
+                  ["Programming", "Digital Marketing", "English"],
                   4,
                   () {
                     print("Card tapped!");
 
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => DetailViewScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => DetailViewScreen()),
                     );
                   },
                 );
@@ -137,6 +149,20 @@ class HomePage extends StatelessWidget {
 
   Widget _buildServiceCard(BuildContext context, String name, String imageUrl,
       List<String> skills, int rating, VoidCallback onClick) {
+    final List<Color> colors = [
+      Color(0xFFE573FF), // Color rosa
+      Color(0xFFB3E5FC), // Color azul claro
+      Color(0xFFD1C4E9), // Color morado claro
+      Color(0xFFE573FF), // Color rosa
+
+      Color(0xFFE573FF), // Color rosa
+    ];
+
+    Color getRandomColor() {
+      final random = Random();
+      return colors[random.nextInt(colors.length)];
+    }
+
     return GestureDetector(
       onTap: onClick,
       child: Card(
@@ -151,7 +177,7 @@ class HomePage extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 40,
-                backgroundImage: NetworkImage(imageUrl),
+                backgroundImage: AssetImage('assets/imgs/detail_img.png'),
               ),
               const SizedBox(height: 10),
               Text(
@@ -170,15 +196,17 @@ class HomePage extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Wrap(
-                children: skills.map((skill) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    child: Chip(
-                      label: Text(skill),
-                      backgroundColor: Colors.purpleAccent,
-                    ),
-                  );
-                }).toList(),
+                spacing: 4.0, // Espacio horizontal entre textos
+                children: skills
+                    .map((skill) => Text(
+                          skill,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold, // Negritas
+                            color: getRandomColor()
+                                .withOpacity(0.8), // Color de fondo más claro
+                          ),
+                        ))
+                    .toList(),
               ),
             ],
           ),

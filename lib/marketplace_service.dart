@@ -5,7 +5,7 @@ import 'package:flutter/services.dart' show rootBundle;
 class MarketplaceService {
   late Web3Client _client;
   final String _rpcUrl = "https://sepolia.infura.io/v3/e509ec83d39e46d5a2e11d25427b19e4"; // Cambia esto a tu nodo de Ethereum
-  final String _contractAddress = "0x71E5Fc6EFb382712EbEc61cb75959CFa229468Fe"; // Reemplaza con la dirección del contrato
+  final String _contractAddress = "0xe25573c547fff805bb942bff8eb59e6fa2f52388"; // Reemplaza con la dirección del contrato
 
   MarketplaceService() {
     _client = Web3Client(_rpcUrl, Client());
@@ -13,7 +13,7 @@ class MarketplaceService {
 
   Future<void> createConsultant(String fullName, String description, int monthlyRate, String privateKey) async {
     try {
-      String abi = await rootBundle.loadString("assets/marketplace_abi.json");
+      String abi = await rootBundle.loadString("assets/marketplace_id_abi.json");
       final contract = DeployedContract(
         ContractAbi.fromJson(abi, "Marketplace"),
         EthereumAddress.fromHex(_contractAddress),
@@ -68,37 +68,10 @@ class MarketplaceService {
     }
   }
 
-  Future<void> toggleAvailability(String privateKey) async {
+
+  Future<void> payConsultant(int consultantId, int gweiPaymentAmount, String privateKey) async {
     try {
-      String abi = await rootBundle.loadString("assets/marketplace_abi.json");
-      final contract = DeployedContract(
-        ContractAbi.fromJson(abi, "Marketplace"),
-        EthereumAddress.fromHex(_contractAddress),
-      );
-
-      final toggleFunction = contract.function("toggleAviability");
-
-      // Crea las credenciales del usuario
-      final credentials = EthPrivateKey.fromHex(privateKey);
-
-      final response = await _client.sendTransaction(
-        credentials,
-        Transaction.callContract(
-          contract: contract,
-          function: toggleFunction,
-          parameters: [],
-        ),
-      );
-
-      print("Availability toggled: $response");
-    } catch (e) {
-      print("Error al cambiar disponibilidad: $e");
-    }
-  }
-
-  Future<void> payConsultant(int consultantId, double paymentAmount, String privateKey) async {
-    try {
-      String abi = await rootBundle.loadString("assets/marketplace_abi.json");
+      String abi = await rootBundle.loadString("assets/marketplace_id_abi.json");
       final contract = DeployedContract(
         ContractAbi.fromJson(abi, "Marketplace"),
         EthereumAddress.fromHex(_contractAddress),
@@ -108,21 +81,27 @@ class MarketplaceService {
 
       // Crea las credenciales del usuario
       final credentials = EthPrivateKey.fromHex(privateKey);
+  final gweiAmountBigInt = BigInt.from(1200);
 
-      final response = await _client.sendTransaction(
+      final response =await _client.sendTransaction(
         credentials,
         Transaction.callContract(
           contract: contract,
           function: payFunction,
-          parameters: [consultantId],
-          value: EtherAmount.fromUnitAndValue(EtherUnit.ether, paymentAmount),
+          parameters: [BigInt.from(2)],
+        value: EtherAmount.fromInt(
+              EtherUnit.gwei, 400000)
+ // Ejemplo: 1200 Gwei
         ),
+        chainId: 11155111, // correct chainid
       );
-      
+
 
       print("Consultant paid: $response");
     } catch (e) {
-      print("Error al pagar al consultor: $e");
+      print("Error paying consultant: $e");
     }
   }
+
+
 }

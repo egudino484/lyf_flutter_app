@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lyf_flutter_app/desc_service.dart';
+import 'package:lyf_flutter_app/marketplace_service.dart';
 import 'package:lyf_flutter_app/utils.dart';
 
 class ContractPage extends StatefulWidget {
@@ -12,6 +13,9 @@ class ContractPage extends StatefulWidget {
 class _ContractPageState extends State<ContractPage> {
   final DecentralisedIDService _decentralisedIDService =
       DecentralisedIDService();
+
+  final MarketplaceService _marketplaceService =
+      MarketplaceService();
 
   Future<void> _fetchDID() async {
     String userAddress =
@@ -45,6 +49,35 @@ class _ContractPageState extends State<ContractPage> {
       privateKey: privateKey,
     );
   }
+  Future<void> _buyMembershipSilver() async {
+    String privateKey =
+        "fda6a6248f0f8e35bb7aed1691dbf3ded825c8b3518f0a794ea3d5c92c1f6c61";
+    final priceEth = convertUsdToEther(1);
+
+    String membershipType = MembershipType.Silver.toString(); // O GOLD , 1 "Silver", 2"Bronze", etc.
+
+    await _decentralisedIDService.buyMembership(
+      membershipType: membershipType,
+      amountEtherMembership: priceEth,
+      privateKey: privateKey,
+    );
+  }
+
+  Future<void> _payConsultant() async {
+    String privateKey =
+        "fda6a6248f0f8e35bb7aed1691dbf3ded825c8b3518f0a794ea3d5c92c1f6c61";
+    final consultantId = 2;//szymon
+    final int gweiPaymentAmount = 1200;//10 usd
+
+    String membershipType = MembershipType.Gold.toString(); // O GOLD , 1 "Silver", 2"Bronze", etc.
+
+    await _marketplaceService.payConsultant(
+      consultantId,
+     gweiPaymentAmount,
+     privateKey,
+    );
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,9 +102,17 @@ class _ContractPageState extends State<ContractPage> {
             const SizedBox(height: 20), // Espacio entre los botones
             ElevatedButton(
               onPressed: _buyMembership,
-              child: const Text("Buy Membership"),
+              child: const Text("Buy Membership Gold"),
+            ),
+            ElevatedButton(
+              onPressed: _buyMembershipSilver,
+              child: const Text("Buy Membership Silver"),
             ),
             // Agrega más botones según sea necesario
+             ElevatedButton(
+              onPressed: _payConsultant,
+              child: const Text("Transfer Consultant"),
+            ),
           ],
         ),
       ),

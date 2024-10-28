@@ -145,7 +145,7 @@ class _SessionBookingScreenState extends State<SessionBookingScreen> {
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
-                      child: Text("Book a session"),
+                      child: Text("Book and pay session"),
                     ),
                   ),
                 ],
