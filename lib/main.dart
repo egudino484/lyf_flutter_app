@@ -3,6 +3,7 @@ import 'package:lyf_flutter_app/pages/gridview_services.dart';
 import 'package:lyf_flutter_app/pages/home.dart';
 
 import 'pages/contract_screen.dart';
+import 'pages/detail_view.dart';
 
 void main() {
   runApp(HotelApp());
@@ -15,6 +16,7 @@ class HotelApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Home Page',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -50,7 +52,7 @@ class HomePage extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) =>  ContractPage()),
+                MaterialPageRoute(builder: (context) => ContractPage()),
               );
             },
           ),
@@ -91,10 +93,18 @@ class HomePage extends StatelessWidget {
               itemBuilder: (context, index) {
                 return _buildServiceCard(
                   context,
-                  'Genga Ajayi',
-                  'https://storage.googleapis.com/a1aa/image/rxek1hyItiSfT0gSKtoMl9au4TwoofRfCKN5xrDEGCag1KnOB.jpg',
-                  ['Computer studies', 'English', 'Chemistry'],
-                  5,
+                  "John Doe",
+                  "https://example.com/image.jpg",
+                  ["Skill 1", "Skill 2", "Skill 3"],
+                  4,
+                  () {
+                    print("Card tapped!");
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => DetailViewScreen()),
+                    );
+                  },
                 );
               },
             ),
@@ -126,49 +136,52 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildServiceCard(BuildContext context, String name, String imageUrl,
-      List<String> skills, int rating) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      elevation: 5,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircleAvatar(
-              radius: 40,
-              backgroundImage: NetworkImage(imageUrl),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              name,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(5, (index) {
-                return Icon(
-                  index < rating ? Icons.star : Icons.star_border,
-                  color: Colors.amber,
-                );
-              }),
-            ),
-            const SizedBox(height: 10),
-            Wrap(
-              children: skills.map((skill) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  child: Chip(
-                    label: Text(skill),
-                    backgroundColor: Colors.purpleAccent,
-                  ),
-                );
-              }).toList(),
-            ),
-          ],
+      List<String> skills, int rating, VoidCallback onClick) {
+    return GestureDetector(
+      onTap: onClick,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        elevation: 5,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                radius: 40,
+                backgroundImage: NetworkImage(imageUrl),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                name,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(5, (index) {
+                  return Icon(
+                    index < rating ? Icons.star : Icons.star_border,
+                    color: Colors.amber,
+                  );
+                }),
+              ),
+              const SizedBox(height: 10),
+              Wrap(
+                children: skills.map((skill) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: Chip(
+                      label: Text(skill),
+                      backgroundColor: Colors.purpleAccent,
+                    ),
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
         ),
       ),
     );
